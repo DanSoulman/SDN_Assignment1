@@ -33,13 +33,19 @@ class CustomTopo(Topo):
         for i in xrange(0, NO_OF_AGGREGATES + NO_OF_CORE_SWITCHES):
             switch_list.append(self.addSwitch('S%s' % str(i + 1)))
             
-            if i == NO_OF_CORE_SWITCHES - 1: #Links Core Switches (1 and 2) 
+            if i == 1: #Links Core Switches (1 and 2) 
                 self.addLink(switch_list[i - 1], switch_list[i])
             
             #Creates the Aggregation Switches and adds them to Core Switches
             elif i > NO_OF_CORE_SWITCHES - 1:
                 #Adds the first half (3 - 5 by default) to switch 1 and the second half (6 - 8) to switch 2
-                self.addLink(switch_list[i], switch_list[0] if (i - NO_OF_HOSTS_PER_AGGREGATE) < (NO_OF_AGGREGATES / 2) else switch_list[1])
+                
+                if (i - NO_OF_CORE_SWITCHES) < (NO_OF_AGGREGATES / 2):
+                    self.addLink(switch_list[i], switch_list[0])
+
+                else:
+                    self.addLink(switch_list[i], switch_list[1])
+
 
                 #Adds as many hosts as set in HOST_PER_AGGREGATE to the switch in the current index 
                 for j in range(NO_OF_HOSTS_PER_AGGREGATE):
@@ -47,8 +53,7 @@ class CustomTopo(Topo):
                     host_track += 1
                     self.addLink(switch_list[i], host)
 
-
-
+        
 if __name__ == '__main__':
     setLogLevel('info')
 
@@ -56,7 +61,7 @@ if __name__ == '__main__':
 
     net = Mininet(topo=topo)
     # Create Controller C0 on port 6653 with IP 192.168.254.202
-    controller = net.addController("C0", port=6653, ip="192.168.254.202")
+    controller = net.addController("C0", port=6653, ip="192.168.254.202", controller=RemoteController)
     
     net.start()
     
