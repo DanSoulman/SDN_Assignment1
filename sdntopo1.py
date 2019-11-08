@@ -7,8 +7,6 @@ from mininet.node import CPULimitedHost, Controller, RemoteController
 from mininet.link import TCLink
 from mininet.util import irange, dumpNodeConnections
 from mininet.log import setLogLevel
-from mininet.topo import Topo
-from mininet.util import irange
 from mininet.cli import CLI
 
 # GLOBALS
@@ -38,8 +36,8 @@ class CustomTopo(Topo):
             
             #Creates the Aggregation Switches and adds them to Core Switches
             elif i > NO_OF_CORE_SWITCHES - 1:
-                #Adds the first half (3 - 5 by default) to switch 1 and the second half (6 - 8) to switch 2
                 
+                #Adds the first half (3 - 5 by default) to switch 1 and the second half (6 - 8) to switch 2
                 if (i - NO_OF_CORE_SWITCHES) < (NO_OF_AGGREGATES / 2):
                     self.addLink(switch_list[i], switch_list[0])
 
@@ -73,4 +71,3 @@ if __name__ == '__main__':
     
     CLI(net)  # Opens CLI info
     net.stop() # Ends mininet
-
