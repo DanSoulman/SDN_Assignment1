@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     topo = CustomTopo(NO_OF_CORE_SWITCHES = CORE_SWITCH_COUNT, NO_OF_AGGREGATES=AGGREGATE_COUNT, NO_OF_HOSTS_PER_AGGREGATE=HOST_PER_AGGREGATE)
 
-    net = Mininet(topo=topo)
+    net = Mininet(topo=topo, controller=None)# Removed default controller (Thanks Jonathan)
     # Create Controller C0 on port 6653 with IP 192.168.254.202
     controller = net.addController("C0", port=6653, ip="192.168.254.202", controller=RemoteController)
     
